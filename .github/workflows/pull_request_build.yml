@@ -1,0 +1,38 @@
+name: Test
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "15"
+      - name: Install npm Dependencies
+        run: npm install
+      - name: Run Linting
+        run: npm run lint
+      - name: Run Tests
+        run: npm run ci-test
+      - name: Publish Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: github.event_name == 'pull_request'
+        name: Publish Coverage Results
+        uses: romeovs/lcov-reporter-action@v0.2.17
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          lcov-file: ./coverage/lcov.info
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1.6
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          files: junit.xml
