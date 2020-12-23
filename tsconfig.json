@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "jsx": "react",
+        "moduleResolution": "node",
+        "strict": true,
+        "allowJs": true,
+        "skipLibCheck": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "outDir": "dist",
+        "declaration": true,
+        "lib": [
+            "es2019",
+        ]
+    },
+    "exclude": [
+        "**/__tests__/**"
+    ],
+    "include": [
+        "src"
+    ]
+}
