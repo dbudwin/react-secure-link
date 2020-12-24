@@ -1,7 +1,11 @@
-# react-secure-link 🔒
+# react-secure-link 🔗
 
 ![Test](https://github.com/dbudwin/react-secure-link/workflows/Test/badge.svg?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/dbudwin/react-secure-link/badge.svg?branch=main)](https://coveralls.io/github/dbudwin/react-secure-link?branch=main)
+![npm](https://img.shields.io/npm/dw/react-secure-link)
+![GitHub](https://img.shields.io/github/license/dbudwin/react-secure-link)
+![npm bundle size](https://img.shields.io/bundlephobia/min/react-secure-link)
+![npm](https://img.shields.io/npm/v/react-secure-link)
 
 A TypeScript compatible React component to avoid security exploits when opening a link in a new tab.  `react-secure-link` is **lightweight** and has **zero dependencies**!
 
