@@ -33,17 +33,21 @@ Using `react-secure-link` for outbound links prevents the new tab from having ac
 
 ### API
 
-The `SecureLink` component has the following props:
+In addition to any prop defined as part of the `React.HTMLAttributes<HTMLAnchorElement>` interface (i.e. `className`, `id`, `role`, `style`), the `SecureLink` component has the following custom props:
 
 | prop        | Required | Type     | Description                                                              |
 |-------------|----------|----------|--------------------------------------------------------------------------|
 | `url`       | Yes      | `string` | The URL to navigate to.                                                  |
 | `text`      | No       | `string` | The text to show.  If not provided, the given URL will be shown instead. |
-| `className` | No       | `string` | The CSS class to apply to the link.                                      |
-| `style`     | No       | `object` | The CSS styling to apply to the link.                                    |
+| `uniqueKey` | No       | `string` or `number` | A unique key to identify the link.  This is being used as a `key` value for the component.  For more information, refer to [React's website about keys](https://reactjs.org/docs/lists-and-keys.html#keys). |
 
+### Basic Usage Example
 
-### Full Usage Example
+```tsx
+<SecureLink url="https://www.npmjs.com/package/react-secure-link" />
+```
+
+### Advance Usage Example
 
 ```tsx
 <SecureLink
@@ -51,5 +55,6 @@ The `SecureLink` component has the following props:
     text="react-secure-link on NPM"
     className="no-link-decoration"
     style={{ color: "red" }}
+    uniqueKey={123}
 />
 ```
