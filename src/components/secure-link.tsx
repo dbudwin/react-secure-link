@@ -1,20 +1,18 @@
-import React, { CSSProperties, ReactElement } from "react";
+import React, { Key, ReactElement } from "react";
 
-interface SecureLinkProps {
+interface SecureLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
     url: string;
     text?: string;
-    className?: string;
-    style?: CSSProperties;
+    uniqueKey?: Key;
 }
 
-export function SecureLink({ url, text, className, style }: SecureLinkProps): ReactElement {
+export function SecureLink({ url, text, uniqueKey }: SecureLinkProps): ReactElement {
     return (
         <a
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className={className}
-            style={style}
+            key={uniqueKey}
         >
             {
                 text ? text : url
