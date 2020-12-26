@@ -13,12 +13,6 @@ beforeAll(() => {
     url = faker.internet.url();
 });
 
-const emptyTextValues = [
-    undefined,
-    null,
-    "",
-];
-
 const uniqueKeyPropValues = [
     undefined,
     null,
@@ -26,68 +20,86 @@ const uniqueKeyPropValues = [
     faker.random.word(),
 ];
 
-function renderSecureLink(text: string, uniqueKey: Key): void {
-    render(<SecureLink text={text} url={url} key={uniqueKey} />);
+function renderSecureLinkWithoutChildren(uniqueKey: Key): void {
+    render(<SecureLink url={url} key={uniqueKey} />);
+}
+
+function renderSecureLinkWithChildren(text: string, uniqueKey: Key): void {
+    render(<SecureLink url={url} key={uniqueKey}>{text}</SecureLink>);
 }
 
 function getLinkByRole(): HTMLAnchorElement {
     return screen.getByRole("link") as HTMLAnchorElement;
 }
 
-function itRendersWithoutCrashing(text: string, uniqueKey: Key): void {
-    it("renders link without crashing", () => {
-        renderSecureLink(text, uniqueKey);
+each(uniqueKeyPropValues).describe(`when given uniqueKey: %s`, (uniqueKey?) => {
+    describe("when not given children", () => {
+        it("renders link without crashing", () => {
+            renderSecureLinkWithoutChildren(uniqueKey);
 
-        expect(getLinkByRole()).toBeInTheDocument();
-    });
-}
+            expect(getLinkByRole()).toBeInTheDocument();
+        });
 
-function itHasExpectedAttributes(text: string, uniqueKey: Key): void {
-    it("links to given URL", () => {
-        renderSecureLink(text, uniqueKey);
-
-        expect(getLinkByRole()).toHaveAttribute("href", url);
-    });
-
-    it("has expected attributes to open link securely", () => {
-        renderSecureLink(text, uniqueKey);
-
-        expect(getLinkByRole()).toHaveAttribute("rel", "noopener noreferrer");
-    });
-
-    it("has expected attributes to open link in new tab", () => {
-        renderSecureLink(text, uniqueKey);
-
-        expect(getLinkByRole()).toHaveAttribute("target", "_blank");
-    });
-}
-
-each(uniqueKeyPropValues).describe(`when given uniqueKey="%s"`, (uniqueKey?) => {
-    each(emptyTextValues).describe(`when given empty text="%s"`, (text?) => {
-        itRendersWithoutCrashing(text, uniqueKey);
-        itHasExpectedAttributes(text, uniqueKey);
-
-        it("text is the same as the URL", () => {
-            renderSecureLink(text, uniqueKey);
+        it("has given text", () => {
+            renderSecureLinkWithoutChildren(uniqueKey);
 
             expect(getLinkByRole()).toHaveTextContent(url);
         });
+
+        it("links to given URL", () => {
+            renderSecureLinkWithoutChildren(uniqueKey);
+
+            expect(getLinkByRole()).toHaveAttribute("href", url);
+        });
+
+        it("has expected attributes to open link securely", () => {
+            renderSecureLinkWithoutChildren(uniqueKey);
+
+            expect(getLinkByRole()).toHaveAttribute("rel", "noopener noreferrer");
+        });
+
+        it("has expected attributes to open link in new tab", () => {
+            renderSecureLinkWithoutChildren(uniqueKey);
+
+            expect(getLinkByRole()).toHaveAttribute("target", "_blank");
+        });
     });
 
-    describe("when given text", () => {
+    describe("when given children", () => {
         let text: string;
 
         beforeAll(() => {
             text = faker.lorem.word();
         });
 
-        itRendersWithoutCrashing(text, uniqueKey);
-        itHasExpectedAttributes(text, uniqueKey);
+        it("renders link without crashing", () => {
+            renderSecureLinkWithChildren(text, uniqueKey);
+
+            expect(getLinkByRole()).toBeInTheDocument();
+        });
 
         it("has given text", () => {
-            renderSecureLink(text, uniqueKey);
+            renderSecureLinkWithChildren(text, uniqueKey);
 
             expect(getLinkByRole()).toHaveTextContent(text);
+        });
+
+        it("links to given URL", () => {
+            renderSecureLinkWithChildren(text, uniqueKey);
+
+            expect(getLinkByRole()).toHaveAttribute("href", url);
+        });
+
+        it("has expected attributes to open link securely", () => {
+            renderSecureLinkWithChildren(text, uniqueKey);
+
+            expect(getLinkByRole()).toHaveAttribute("rel", "noopener noreferrer");
+        });
+
+        it("has expected attributes to open link in new tab", () => {
+            renderSecureLinkWithChildren(text, uniqueKey);
+
+            expect(getLinkByRole()).toHaveAttribute("target", "_blank");
         });
     });
 });
