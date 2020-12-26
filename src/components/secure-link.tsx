@@ -2,11 +2,10 @@ import React, { Key, ReactElement } from "react";
 
 interface SecureLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
     url: string;
-    text?: string;
     uniqueKey?: Key;
 }
 
-export function SecureLink({ url, text, uniqueKey }: SecureLinkProps): ReactElement {
+export function SecureLink({ url, uniqueKey, children }: SecureLinkProps): ReactElement {
     return (
         <a
             href={url}
@@ -14,9 +13,7 @@ export function SecureLink({ url, text, uniqueKey }: SecureLinkProps): ReactElem
             rel="noopener noreferrer"
             key={uniqueKey}
         >
-            {
-                text ? text : url
-            }
+            {children ? children : url}
         </a>
     );
 }
