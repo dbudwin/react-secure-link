@@ -1,19 +1,15 @@
-import React, { Key, ReactElement } from "react";
+import React, { ReactElement } from "react";
 
-interface SecureLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
-    url: string;
-    uniqueKey?: Key;
-}
+type SecureLinkProps = JSX.IntrinsicElements["a"]
 
-export function SecureLink({ url, uniqueKey, children }: SecureLinkProps): ReactElement {
+export function SecureLink({ ...props }: SecureLinkProps): ReactElement {
     return (
         <a
-            href={url}
             target="_blank"
             rel="noopener noreferrer"
-            key={uniqueKey}
+            {...props}
         >
-            {children ? children : url}
+            {props.children ? props.children : props.href}
         </a>
     );
 }
