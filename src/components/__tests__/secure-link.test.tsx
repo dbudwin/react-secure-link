@@ -1,10 +1,9 @@
 import "@testing-library/jest-dom";
 
-import React, { Key } from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
+import React from "react";
 import { SecureLink } from "../secure-link";
-import each from "jest-each";
 import faker from "faker";
 
 let url: string;
@@ -13,93 +12,120 @@ beforeAll(() => {
     url = faker.internet.url();
 });
 
-const uniqueKeyPropValues = [
-    undefined,
-    null,
-    faker.random.number(),
-    faker.random.word(),
-];
-
-function renderSecureLinkWithoutChildren(uniqueKey: Key): void {
-    render(<SecureLink url={url} key={uniqueKey} />);
+function renderSecureLinkWithoutChildren(): void {
+    render(<SecureLink href={url} />);
 }
 
-function renderSecureLinkWithChildren(text: string, uniqueKey: Key): void {
-    render(<SecureLink url={url} key={uniqueKey}>{text}</SecureLink>);
+function renderSecureLinkWithChildren(text: string): void {
+    render(<SecureLink href={url}>{text}</SecureLink>);
 }
 
 function getLinkByRole(): HTMLAnchorElement {
     return screen.getByRole("link") as HTMLAnchorElement;
 }
 
-each(uniqueKeyPropValues).describe(`when given uniqueKey: %s`, (uniqueKey?) => {
-    describe("when not given children", () => {
-        it("renders link without crashing", () => {
-            renderSecureLinkWithoutChildren(uniqueKey);
+describe("when not given children", () => {
+    it("renders link without crashing", () => {
+        renderSecureLinkWithoutChildren();
 
-            expect(getLinkByRole()).toBeInTheDocument();
-        });
-
-        it("has given text", () => {
-            renderSecureLinkWithoutChildren(uniqueKey);
-
-            expect(getLinkByRole()).toHaveTextContent(url);
-        });
-
-        it("links to given URL", () => {
-            renderSecureLinkWithoutChildren(uniqueKey);
-
-            expect(getLinkByRole()).toHaveAttribute("href", url);
-        });
-
-        it("has expected attributes to open link securely", () => {
-            renderSecureLinkWithoutChildren(uniqueKey);
-
-            expect(getLinkByRole()).toHaveAttribute("rel", "noopener noreferrer");
-        });
-
-        it("has expected attributes to open link in new tab", () => {
-            renderSecureLinkWithoutChildren(uniqueKey);
-
-            expect(getLinkByRole()).toHaveAttribute("target", "_blank");
-        });
+        expect(getLinkByRole()).toBeInTheDocument();
     });
 
-    describe("when given children", () => {
-        let text: string;
+    it("has given text", () => {
+        renderSecureLinkWithoutChildren();
 
-        beforeAll(() => {
-            text = faker.lorem.word();
-        });
+        expect(getLinkByRole()).toHaveTextContent(url);
+    });
 
-        it("renders link without crashing", () => {
-            renderSecureLinkWithChildren(text, uniqueKey);
+    it("links to given URL", () => {
+        renderSecureLinkWithoutChildren();
 
-            expect(getLinkByRole()).toBeInTheDocument();
-        });
+        expect(getLinkByRole()).toHaveAttribute("href", url);
+    });
 
-        it("has given text", () => {
-            renderSecureLinkWithChildren(text, uniqueKey);
+    it("has expected attributes to open link securely", () => {
+        renderSecureLinkWithoutChildren();
 
-            expect(getLinkByRole()).toHaveTextContent(text);
-        });
+        expect(getLinkByRole()).toHaveAttribute("rel", "noopener noreferrer");
+    });
 
-        it("links to given URL", () => {
-            renderSecureLinkWithChildren(text, uniqueKey);
+    it("has expected attributes to open link in new tab", () => {
+        renderSecureLinkWithoutChildren();
 
-            expect(getLinkByRole()).toHaveAttribute("href", url);
-        });
+        expect(getLinkByRole()).toHaveAttribute("target", "_blank");
+    });
 
-        it("has expected attributes to open link securely", () => {
-            renderSecureLinkWithChildren(text, uniqueKey);
+    it(`can use intrinsic "a" element attributes`, () => {
+        const className = faker.random.word();
+        const style = { color: "red" };
+        const role = faker.random.word();
+        const handleClick = jest.fn();
 
-            expect(getLinkByRole()).toHaveAttribute("rel", "noopener noreferrer");
-        });
+        render(<SecureLink href={url} className={className} style={style} role={role} onClick={handleClick} />);
 
-        it("has expected attributes to open link in new tab", () => {
-            renderSecureLinkWithChildren(text, uniqueKey);
+        const link = screen.getByRole(role);
 
-            expect(getLinkByRole()).toHaveAttribute("target", "_blank");
-        });
+        fireEvent.click(link);
+
+        expect(link).toBeInTheDocument();
+        expect(link).toHaveClass(className, { exact: true });
+        expect(link).toHaveStyle(style);
+        expect(handleClick).toHaveBeenCalledTimes(1);
+    });
+});
+
+describe("when given children", () => {
+    let text: string;
+
+    beforeAll(() => {
+        text = faker.lorem.word();
+    });
+
+    it("renders link without crashing", () => {
+        renderSecureLinkWithChildren(text);
+
+        expect(getLinkByRole()).toBeInTheDocument();
+    });
+
+    it("has given text", () => {
+        renderSecureLinkWithChildren(text);
+
+        expect(getLinkByRole()).toHaveTextContent(text);
+    });
+
+    it("links to given URL", () => {
+        renderSecureLinkWithChildren(text);
+
+        expect(getLinkByRole()).toHaveAttribute("href", url);
+    });
+
+    it("has expected attributes to open link securely", () => {
+        renderSecureLinkWithChildren(text);
+
+        expect(getLinkByRole()).toHaveAttribute("rel", "noopener noreferrer");
+    });
+
+    it("has expected attributes to open link in new tab", () => {
+        renderSecureLinkWithChildren(text);
+
+        expect(getLinkByRole()).toHaveAttribute("target", "_blank");
+    });
+
+    it(`can use intrinsic "a" element attributes`, () => {
+        const className = faker.random.word();
+        const style = { color: "red" };
+        const role = faker.random.word();
+        const handleClick = jest.fn();
+
+        render(<SecureLink href={url} className={className} style={style} role={role} onClick={handleClick} />);
+
+        const link = screen.getByRole(role);
+
+        fireEvent.click(link);
+
+        expect(link).toBeInTheDocument();
+        expect(link).toHaveClass(className, { exact: true });
+        expect(link).toHaveStyle(style);
+        expect(handleClick).toHaveBeenCalledTimes(1);
     });
 });

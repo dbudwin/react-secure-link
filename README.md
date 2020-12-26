@@ -29,31 +29,27 @@ Using `react-secure-link` for outbound links prevents the new tab from having ac
 
 1. Add `react-secure-link` to your project via `npm install react-secure-link`
 2. Import the package: `import { SecureLink } from "react-secure-link";`
-3. Use the following for links you want to open in a new tab: `<SecureLink url="https://www.npmjs.com/package/react-secure-link" text="react-secure-link on NPM" />`
+3. Use the following for links you want to open in a new tab: `<SecureLink href="https://www.npmjs.com/package/react-secure-link">react-secure-link on NPM</SecureLink>`
 
 ### API
 
-`SecureLink` can be used to make text, images, or other children components clickable.  In addition to any prop defined as part of the `React.HTMLAttributes<HTMLAnchorElement>` interface (i.e. `className`, `id`, `role`, `style`), the `SecureLink` component has the following custom props:
-
-| prop        | Required | Type     | Description                                                              |
-|-------------|----------|----------|--------------------------------------------------------------------------|
-| `url`       | Yes      | `string` | The URL to navigate to.                                                  |
-| `uniqueKey` | No       | `string` or `number` | A unique key to identify the link.  This is being used as a `key` value for the component.  For more information, refer to [React's website about keys](https://reactjs.org/docs/lists-and-keys.html#keys). |
+`SecureLink` can be used to make text, images, or other children components clickable.  In addition, standard `a` element attributes can be pass in as props (i.e. `href`, `className`, `id`, `role`, `style`).
 
 ### Basic Usage Example
 
 ```tsx
-<SecureLink url="https://www.npmjs.com/package/react-secure-link" />
+<SecureLink href="https://www.npmjs.com/package/react-secure-link" />
 ```
 
 ### Advance Usage Example
 
 ```tsx
 <SecureLink
-    url="https://www.npmjs.com/package/react-secure-link"
+    href="https://www.npmjs.com/package/react-secure-link"
     className="no-link-decoration"
     style={{ color: "red" }}
-    uniqueKey={123}
+    key={123}
+    onClick={() => console.log("Clicked")}
 >
     react-secure-link on NPM
 </SecureLink>
