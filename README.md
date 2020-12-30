@@ -31,6 +31,12 @@ Using `react-secure-link` for outbound links prevents the new tab from having ac
 2. Import the package: `import { SecureLink } from "react-secure-link";`
 3. Use the following for links you want to open in a new tab: `<SecureLink href="https://www.npmjs.com/package/react-secure-link">react-secure-link on NPM</SecureLink>`
 
+## CodeSandbox Examples
+
+There are several examples of the various ways to use this package on CodeSandbox.
+
+[react-secure-link CodeSandbox Examples](https://codesandbox.io/s/react-seucre-link-examples-wzcwf)
+
 ### API
 
 `SecureLink` can be used to make text, images, or other children components clickable.  In addition, standard `a` element attributes can be pass in as props (i.e. `href`, `className`, `id`, `role`, `style`).

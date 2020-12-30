@@ -1,6 +1,6 @@
 {
   "name": "react-secure-link",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A TypeScript compatible React component to avoid security exploits when opening a link in a new tab.",
   "keywords": [
     "react",
