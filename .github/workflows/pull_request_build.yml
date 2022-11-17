@@ -6,6 +6,9 @@ on:
     branches: [main]
 jobs:
   test:
+    permissions:
+      checks: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repository
