@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 
-type SecureLinkProps = JSX.IntrinsicElements["a"]
+type SecureLinkProps = Omit<JSX.IntrinsicElements["a"], "target">
 
 export function SecureLink({ ...props }: SecureLinkProps): ReactElement {
     let element: React.ReactNode;

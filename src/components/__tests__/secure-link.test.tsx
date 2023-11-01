@@ -58,9 +58,9 @@ describe("when child component is '0'", () => {
     });
 
     it(`can use intrinsic "a" element attributes`, () => {
-        const className = faker.random.word();
+        const className = faker.lorem.word();
         const style = { color: "red" };
-        const role = faker.random.word();
+        const role = faker.lorem.word();
         const handleClick = jest.fn();
 
         render(<SecureLink href={url} className={className} style={style} role={role} onClick={handleClick}>{0}</SecureLink>);
@@ -107,13 +107,14 @@ describe("when not given children", () => {
         expect(getLinkByRole()).toHaveAttribute("target", "_blank");
     });
 
-    it(`can use intrinsic "a" element attributes`, () => {
-        const className = faker.random.word();
+    it(`can use intrinsic "a" element attributes except "target"`, () => {
+        const className = faker.lorem.word();
         const style = { color: "red" };
-        const role = faker.random.word();
+        const role = faker.lorem.word();
+        const ariaLabel = faker.lorem.word();
         const handleClick = jest.fn();
 
-        render(<SecureLink href={url} className={className} style={style} role={role} onClick={handleClick} />);
+        render(<SecureLink href={url} className={className} style={style} role={role} onClick={handleClick} aria-label={ariaLabel} />);
 
         const link = screen.getByRole(role);
 
@@ -122,6 +123,7 @@ describe("when not given children", () => {
         expect(link).toBeInTheDocument();
         expect(link).toHaveClass(className, { exact: true });
         expect(link).toHaveStyle(style);
+        expect(link).toHaveAttribute("aria-label", ariaLabel);
         expect(handleClick).toHaveBeenCalledTimes(1);
     });
 });
@@ -163,13 +165,18 @@ describe("when given children", () => {
         expect(getLinkByRole()).toHaveAttribute("target", "_blank");
     });
 
-    it(`can use intrinsic "a" element attributes`, () => {
-        const className = faker.random.word();
+    it(`can use intrinsic "a" element attributes except "target"`, () => {
+        const className = faker.lorem.word();
         const style = { color: "red" };
-        const role = faker.random.word();
+        const role = faker.lorem.word();
+        const ariaLabel = faker.lorem.word();
         const handleClick = jest.fn();
 
-        render(<SecureLink href={url} className={className} style={style} role={role} onClick={handleClick} />);
+        render(
+            <SecureLink href={url} className={className} style={style} role={role} onClick={handleClick} aria-label={ariaLabel}>
+                {text}
+            </SecureLink>
+        );
 
         const link = screen.getByRole(role);
 
@@ -178,6 +185,7 @@ describe("when given children", () => {
         expect(link).toBeInTheDocument();
         expect(link).toHaveClass(className, { exact: true });
         expect(link).toHaveStyle(style);
+        expect(link).toHaveAttribute("aria-label", ariaLabel);
         expect(handleClick).toHaveBeenCalledTimes(1);
     });
 });
